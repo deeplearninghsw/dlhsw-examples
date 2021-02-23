@@ -2,22 +2,24 @@ import numpy as np
 import itertools
 import matplotlib.pyplot as plt
 import matplotlib as mpl
-from matplotlib.colors import ListedColormap
-
 
 from scipy import linalg
 from sklearn import mixture
 
-color_iter = itertools.cycle(['navy', 'c', 'cornflowerblue', 'gold',
-                              'darkorange'])
-cmap_light = ListedColormap(['#FFAAAA', '#AAAAFF', '#AAFFAA'])
+
+cmap_light = mpl.colors.ListedColormap(['#FFAAAA', '#AAAAFF', '#AAFFAA'])
+
+
+def color_iter(iterations):
+    color_list = ['navy', 'c', 'cornflowerblue', 'gold', 'darkorange']
+    return itertools.cycle([color_list[i] for i in range(iterations)])
 
 
 def plot_results(X, Y_, means, covariances, index, title):
     fig = plt.figure(figsize=(6, 10))
     splot = plt.subplot(2, 1, 1 + index)
     for i, (mean, covar, color) in enumerate(zip(
-            means, covariances, color_iter)):
+            means, covariances, color_iter(covariances.shape[0]))):
         v, w = linalg.eigh(covar)
         v = 2. * np.sqrt(2.) * np.sqrt(v)
         u = w[0] / linalg.norm(w[0])
