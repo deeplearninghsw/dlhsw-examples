@@ -2,16 +2,19 @@ import numpy as np
 import itertools
 import matplotlib.pyplot as plt
 import matplotlib as mpl
+from matplotlib.colors import ListedColormap
+
 
 from scipy import linalg
 from sklearn import mixture
 
 color_iter = itertools.cycle(['navy', 'c', 'cornflowerblue', 'gold',
                               'darkorange'])
+cmap_light = ListedColormap(['#FFAAAA', '#AAAAFF', '#AAFFAA'])
 
 
 def plot_results(X, Y_, means, covariances, index, title):
-    fig = plt.figure(figsize=(8, 10))
+    fig = plt.figure(figsize=(6, 10))
     splot = plt.subplot(2, 1, 1 + index)
     for i, (mean, covar, color) in enumerate(zip(
             means, covariances, color_iter)):
@@ -37,6 +40,37 @@ def plot_results(X, Y_, means, covariances, index, title):
              np.amax(X[:, 0]) + np.ptp(X[:, 0]*0.05))
     plt.ylim(np.amin(X[:, 1]) - np.ptp(X[:, 1]*0.05),
              np.amax(X[:, 1]) + np.ptp(X[:, 1]*0.05))
-    plt.xticks(())
-    plt.yticks(())
+    # plt.xticks(())
+    # plt.yticks(())
+    plt.title(title)
+
+
+def make_meshgrid(x, y, h=.02):
+    x_min, x_max = x.min() - 1, x.max() + 1
+    y_min, y_max = y.min() - 1, y.max() + 1
+    xx, yy = np.meshgrid(np.arange(x_min, x_max, h),
+                         np.arange(y_min, y_max, h))
+    return xx, yy
+
+
+def plot_contours(ax, clf, xx, yy, **params):
+    Z = clf.predict(np.c_[xx.ravel(), yy.ravel()])
+    Z = Z.reshape(xx.shape)
+    out = ax.contourf(xx, yy, Z, **params)
+    return out
+
+
+def plot_boundaries(X, y_pred, gmm, title):
+    fig, ax = plt.subplots()
+    # Decision Border
+    X0, X1 = X[:, 0], X[:, 1]
+    xx, yy = make_meshgrid(X0, X1)
+    plot_contours(ax, gmm, xx, yy, cmap=cmap_light, alpha=0.8)
+
+    plt.scatter(X[:, 0], X[:, 1], c=y_pred)
+
+    plt.xlim(np.amin(X[:, 0]) - np.ptp(X[:, 0]*0.05),
+             np.amax(X[:, 0]) + np.ptp(X[:, 0]*0.05))
+    plt.ylim(np.amin(X[:, 1]) - np.ptp(X[:, 1]*0.05),
+             np.amax(X[:, 1]) + np.ptp(X[:, 1]*0.05))
     plt.title(title)
