@@ -15,7 +15,22 @@ def color_iter(iterations):
     return itertools.cycle([color_list[i] for i in range(iterations)])
 
 
-def plot_results(X, Y_, means, covariances, index, title):
+def plot_dataset(x_cords, y_cords, title):
+    plt.scatter(x_cords, y_cords, label='Data')
+
+    plt.xlim(np.amin(x_cords) - np.ptp(x_cords*0.05),
+             np.amax(x_cords) + np.ptp(x_cords*0.05))
+    plt.ylim(np.amin(y_cords) - np.ptp(y_cords*0.05),
+             np.amax(y_cords) + np.ptp(y_cords*0.05))
+
+    plt.xlabel('x')
+    plt.ylabel('y')
+    plt.title(title)
+    plt.legend()
+    plt.show()
+
+
+def plot_gaussian_cluster(X, Y_, means, covariances, index, title):
     fig = plt.figure(figsize=(6, 10))
     splot = plt.subplot(2, 1, 1 + index)
     for i, (mean, covar, color) in enumerate(zip(
@@ -45,6 +60,38 @@ def plot_results(X, Y_, means, covariances, index, title):
     # plt.xticks(())
     # plt.yticks(())
     plt.title(title)
+    plt.show()
+
+
+def plot_gaussian_boundaries(X, y_pred, gmm, title):
+    fig, ax = plt.subplots()
+    # Decision Border
+    X0, X1 = X[:, 0], X[:, 1]
+    xx, yy = make_meshgrid(X0, X1)
+    plot_contours(ax, gmm, xx, yy, cmap=cmap_light, alpha=0.8)
+
+    plt.scatter(X[:, 0], X[:, 1], c=y_pred)
+
+    plt.xlim(np.amin(X[:, 0]) - np.ptp(X[:, 0]*0.05),
+             np.amax(X[:, 0]) + np.ptp(X[:, 0]*0.05))
+    plt.ylim(np.amin(X[:, 1]) - np.ptp(X[:, 1]*0.05),
+             np.amax(X[:, 1]) + np.ptp(X[:, 1]*0.05))
+    plt.title(title)
+    plt.show()
+
+
+def plot_kmeans_boundaries(x, y, y_pred, centroids, kmeans, title):
+    fig, ax = plt.subplots()
+    # Decision Border
+    X0, X1 = x[:, 0], x[:, 1]
+    xx, yy = make_meshgrid(X0, X1)
+    plot_contours(ax, kmeans, xx, yy, cmap=cmap_light, alpha=0.8)
+
+    plt.scatter(x[:, 0], x[:, 1], c=y_pred)
+    plt.scatter(centroids[:, 0], centroids[:, 1],
+                color="red", s=250, marker="*")
+    plt.title(title)
+    plt.show()
 
 
 def make_meshgrid(x, y, h=.02):
@@ -60,19 +107,3 @@ def plot_contours(ax, clf, xx, yy, **params):
     Z = Z.reshape(xx.shape)
     out = ax.contourf(xx, yy, Z, **params)
     return out
-
-
-def plot_boundaries(X, y_pred, gmm, title):
-    fig, ax = plt.subplots()
-    # Decision Border
-    X0, X1 = X[:, 0], X[:, 1]
-    xx, yy = make_meshgrid(X0, X1)
-    plot_contours(ax, gmm, xx, yy, cmap=cmap_light, alpha=0.8)
-
-    plt.scatter(X[:, 0], X[:, 1], c=y_pred)
-
-    plt.xlim(np.amin(X[:, 0]) - np.ptp(X[:, 0]*0.05),
-             np.amax(X[:, 0]) + np.ptp(X[:, 0]*0.05))
-    plt.ylim(np.amin(X[:, 1]) - np.ptp(X[:, 1]*0.05),
-             np.amax(X[:, 1]) + np.ptp(X[:, 1]*0.05))
-    plt.title(title)
