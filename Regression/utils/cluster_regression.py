@@ -5,9 +5,6 @@ import matplotlib.gridspec as gridspec
 import tensorflow as tf
 
 from tensorflow import keras
-from tensorflow.keras.constraints import max_norm
-
-from utils.plotting_BGM import plot_results, plot_boundaries
 
 
 def train(x, y, x_lin):
@@ -30,7 +27,7 @@ def train(x, y, x_lin):
     return predData
 
 
-def gaussian_regression(x_cords, y_cords, y_pred):
+def gaussian_regression(x_cords, y_cords, y_pred, title):
     y_cord_1 = np.where(y_pred == 0)[0]
     y_cord_2 = np.where(y_pred == 1)[0]
     y_cord_3 = np.where(y_pred == 2)[0]
@@ -41,11 +38,11 @@ def gaussian_regression(x_cords, y_cords, y_pred):
     '''
     fig, ax = plt.subplots()
     ax.scatter(x_cords[y_cord_1], y_cords[y_cord_1],
-               label='cluster 1', c='blue')
+               label='Cluster 1', c='navy')
     ax.scatter(x_cords[y_cord_2], y_cords[y_cord_2],
-               label='cluster 2', c='orange')
+               label='Cluster 2', c='c')
     ax.scatter(x_cords[y_cord_3], y_cords[y_cord_3],
-               label='cluster 3', c='green')
+               label='Cluster 3', c='cornflowerblue')
     ax.legend()
     plt.show()
     '''
@@ -68,5 +65,6 @@ def gaussian_regression(x_cords, y_cords, y_pred):
                 c='cornflowerblue', label='Cluster 3', linewidth=0.5)
     ax1.scatter(x_lin, predData3, c='black',
                 label='Fit 3', linewidth=0.1, marker='.')
+    plt.title(title)
     ax1.legend()
     plt.show()
