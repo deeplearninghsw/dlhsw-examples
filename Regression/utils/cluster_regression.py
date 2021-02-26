@@ -19,7 +19,7 @@ def train(x, y, x_lin):
     model.add(keras.layers.Dense(1))
 
     batch_size = 64
-    epochs = 50
+    epochs = 100
 
     opt = keras.optimizers.Adam(lr=1e-3)
     model.compile(optimizer=opt, loss='logcosh', metrics=['MAE'])
