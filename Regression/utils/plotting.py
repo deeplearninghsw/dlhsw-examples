@@ -151,7 +151,7 @@ def create_waffle_chart(categories, values, height, width, value_sign=''):
             waffle_chart[row, col] = category_index
 
     # instantiate a new figure object
-    fig = plt.figure()
+    fig = plt.figure(figsize=(6, 2))
 
     # use matshow to display the waffle chart
     colormap = cmap_blue

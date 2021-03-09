@@ -39,7 +39,7 @@ def gaussian_regression(x_cords, y_cords, df, title):
     predData3 = train(x_cords[y_cord_3], y_cords[y_cord_3], x_lin)
 
     # Plot cluster with applied regression
-    fig1, ax1 = plt.subplots()
+    fig1, ax1 = plt.subplots(figsize=(6, 4))
     ax1.scatter(x_cords[y_cord_1], y_cords[y_cord_1],
                 c='navy', label=df['Cluster'].values[0], linewidth=0.5)
     ax1.scatter(x_lin, predData1, c='black',
