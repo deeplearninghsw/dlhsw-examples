@@ -27,25 +27,12 @@ def train(x, y, x_lin):
     return predData
 
 
-def gaussian_regression(x_cords, y_cords, y_pred, title):
-    y_cord_1 = np.where(y_pred == 0)[0]
-    y_cord_2 = np.where(y_pred == 1)[0]
-    y_cord_3 = np.where(y_pred == 2)[0]
+def gaussian_regression(x_cords, y_cords, df, title):
+    y_cord_1 = df['Cords'].values[0]
+    y_cord_2 = df['Cords'].values[1]
+    y_cord_3 = df['Cords'].values[2]
 
     x_lin = tf.linspace(-3.5, 3.5, 200)
-
-    # Plot cluster
-    '''
-    fig, ax = plt.subplots()
-    ax.scatter(x_cords[y_cord_1], y_cords[y_cord_1],
-               label='Cluster 1', c='navy')
-    ax.scatter(x_cords[y_cord_2], y_cords[y_cord_2],
-               label='Cluster 2', c='c')
-    ax.scatter(x_cords[y_cord_3], y_cords[y_cord_3],
-               label='Cluster 3', c='cornflowerblue')
-    ax.legend()
-    plt.show()
-    '''
 
     predData1 = train(x_cords[y_cord_1], y_cords[y_cord_1], x_lin)
     predData2 = train(x_cords[y_cord_2], y_cords[y_cord_2], x_lin)
@@ -54,15 +41,15 @@ def gaussian_regression(x_cords, y_cords, y_pred, title):
     # Plot cluster with applied regression
     fig1, ax1 = plt.subplots()
     ax1.scatter(x_cords[y_cord_1], y_cords[y_cord_1],
-                c='navy', label='Cluster 1', linewidth=0.5)
+                c='navy', label=df['Cluster'].values[0], linewidth=0.5)
     ax1.scatter(x_lin, predData1, c='black',
                 label='Fit 1', linewidth=0.1, marker='.')
     ax1.scatter(x_cords[y_cord_2], y_cords[y_cord_2],
-                c='c', label='Cluster 2', linewidth=0.5)
+                c='c', label=df['Cluster'].values[1], linewidth=0.5)
     ax1.scatter(x_lin, predData2, c='black',
                 label='Fit 2', linewidth=0.1, marker='.')
     ax1.scatter(x_cords[y_cord_3], y_cords[y_cord_3],
-                c='cornflowerblue', label='Cluster 3', linewidth=0.5)
+                c='cornflowerblue', label=df['Cluster'].values[2], linewidth=0.5)
     ax1.scatter(x_lin, predData3, c='black',
                 label='Fit 3', linewidth=0.1, marker='.')
     plt.title(title)
