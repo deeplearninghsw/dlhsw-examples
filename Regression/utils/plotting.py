@@ -113,7 +113,6 @@ def plot_contours(ax, clf, xx, yy, **params):
 
 
 def create_waffle_chart(categories, values, height, width, value_sign=''):
-
     # compute the proportion of each category with respect to the total
     total_values = sum(values)
     category_proportions = [(float(value) / total_values) for value in values]
